@@ -18,7 +18,7 @@ resource "github_team_membership" "briferz_devops_membership" {
   role     = "maintainer"
 }
 
-resource "github_repository" "this-repo" {
+resource "github_repository" "this_repo" {
   name = "iac.brifer-x-github-org"
 
   visibility           = "private"
@@ -29,12 +29,12 @@ resource "github_repository" "this-repo" {
   vulnerability_alerts = true
 }
 
-resource "github_branch" "this-repo-main-branch" {
+resource "github_branch" "this_repo_main_branch" {
   branch     = "main"
-  repository = github_repository.this-repo.id
+  repository = github_repository.this_repo.id
 }
 
-resource "github_branch_default" "this-repo-branch-default" {
-  repository = github_repository.this-repo.id
-  branch     = github_branch.this-repo-main-branch.branch
+resource "github_branch_default" "this_repo_branch_default" {
+  repository = github_repository.this_repo.id
+  branch     = github_branch.this_repo_main_branch.branch
 }
