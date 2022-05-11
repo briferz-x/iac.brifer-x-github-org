@@ -6,6 +6,18 @@ data "github_organization" "organization" {
   name = var.github_owner
 }
 
+resource "github_team" "devops_team" {
+  name        = "devops"
+  description = "The DevOps team."
+  privacy     = "closed"
+}
+
+resource "github_team_membership" "briferz_devops_membership" {
+  team_id  = github_team.devops_team.id
+  username = "briferz"
+  role     = "maintainer"
+}
+
 resource "github_repository" "this-repo" {
   name = "iac.brifer-x-github-org"
 
