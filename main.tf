@@ -38,3 +38,21 @@ resource "github_branch_default" "this_repo_branch_default" {
   repository = github_repository.this_repo.id
   branch     = github_branch.this_repo_main_branch.branch
 }
+
+locals {
+  repositories = {
+  for path in fileset(path.module, "repositories/*.yaml") : basename(path) => file(path)
+  }
+
+  repository_mapping = {
+  for file_name, file_content in local.repositories : trimsuffix(file_name, ".yaml") => yamldecode(file_content)
+  }
+}
+
+module "repository" {
+  source = "./modules/repository"
+
+  for_each = local.repository_mapping
+
+  repo_conf = each.value
+}
