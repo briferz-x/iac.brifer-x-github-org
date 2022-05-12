@@ -12,3 +12,19 @@ resource "github_repository" "repository" {
   has_wiki             = lookup(var.repo_conf, "has_wiki", true)
   vulnerability_alerts = lookup(var.repo_conf, "vulnerability_alerts", true)
 }
+
+locals {
+  branches     = lookup(var.repo_conf, "branches", [])
+  branches_map = {
+  for branch in local.branches : branch["name"] => branch
+  }
+}
+
+module "branch" {
+  source = "../branch"
+
+  for_each = local.branches_map
+
+  branch_conf = each.value
+  repository  = github_repository.repository
+}

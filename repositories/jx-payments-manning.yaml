@@ -1,2 +1,7 @@
 name: jx-payments-manning
 is_private: false
+branches:
+  - name: main
+    default: true
+  - name: dev
+    source_branch: main
