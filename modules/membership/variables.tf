@@ -1,4 +1,4 @@
 variable "member_conf" {
-  type = any
+  type        = any
   description = "The configuration regarding a member resource."
 }
