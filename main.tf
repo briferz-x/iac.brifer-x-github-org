@@ -40,8 +40,9 @@ resource "github_branch_default" "this_repo_branch_default" {
 }
 
 locals {
+  conf_folder  = "conf"
   repositories = {
-  for path in fileset(path.module, "repositories/*.yaml") : basename(path) => file(path)
+  for path in fileset(path.module, "${local.conf_folder}/repositories/*.yaml") : basename(path) => file(path)
   }
 
   repository_mapping = {
