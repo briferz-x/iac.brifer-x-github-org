@@ -1,0 +1,7 @@
+- name: Engineering
+  description: The engineering team of the organization
+  is_secret: false
+- name: Python Devs
+  description: The Python Dev Team.
+  is_secret: false
+  parent_team: Engineering
