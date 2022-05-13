@@ -73,6 +73,7 @@ module "membership" {
   for_each = local.member_mapping
 
   member_conf = each.value
+  teams       = module.team
 }
 
 locals {

@@ -1,0 +1,5 @@
+name: jx3-gke-vault
+is_private: false
+branches:
+  - name: main
+    default: true

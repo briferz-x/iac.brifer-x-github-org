@@ -1,0 +1,7 @@
+name: jx3-terraform-gke
+is_private: false
+branches:
+  - name: main
+    default: true
+  - name: dev
+    source_branch: main

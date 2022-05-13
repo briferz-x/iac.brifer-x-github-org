@@ -1,0 +1,7 @@
+name: python-http
+is_private: true
+branches:
+  - name: master
+    default: true
+  - name: dev
+    source_branch: master
