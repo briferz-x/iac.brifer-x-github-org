@@ -40,28 +40,25 @@ resource "github_branch_default" "this_repo_branch_default" {
 }
 
 locals {
-  conf_folder = "conf"
-}
-
-locals {
-  repositories = {
-  for path in fileset(path.module, "${local.conf_folder}/repositories/*.yaml") : basename(path) => file(path)
-  }
-  repository_mapping = {
-  for file_name, file_content in local.repositories : trimsuffix(file_name, ".yaml") => yamldecode(file_content)
+  conf_folder      = "conf"
+  conf_folder_path = "${path.module}/${local.conf_folder}"
+  teams_file_path  = "${local.conf_folder_path}/teams.yaml"
+  teams_file       = file(local.teams_file_path)
+  teams            = yamldecode(local.teams_file)
+  team_mapping     = {
+  for team in local.teams : team["name"] => team
   }
 }
 
-module "repository" {
-  source = "./modules/repository"
+module "team" {
+  source = "./modules/team"
 
-  for_each = local.repository_mapping
+  for_each = local.team_mapping
 
-  repo_conf = each.value
+  team_conf = each.value
 }
 
 locals {
-  conf_folder_path  = "${path.module}/${local.conf_folder}"
   members_file_path = "${local.conf_folder_path}/members.yaml"
   members_file      = file(local.members_file_path)
   members           = yamldecode(local.members_file)
@@ -79,18 +76,18 @@ module "membership" {
 }
 
 locals {
-  teams_file_path = "${local.conf_folder_path}/teams.yaml"
-  teams_file      = file(local.teams_file_path)
-  teams           = yamldecode(local.teams_file)
-  team_mapping    = {
-  for team in local.teams : team["name"] => team
+  repositories = {
+  for path in fileset(path.module, "${local.conf_folder}/repositories/*.yaml") : basename(path) => file(path)
+  }
+  repository_mapping = {
+  for file_name, file_content in local.repositories : trimsuffix(file_name, ".yaml") => yamldecode(file_content)
   }
 }
 
-module "team" {
-  source = "./modules/team"
+module "repository" {
+  source = "./modules/repository"
 
-  for_each = local.team_mapping
+  for_each = local.repository_mapping
 
-  team_conf = each.value
+  repo_conf = each.value
 }
