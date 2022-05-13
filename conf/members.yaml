@@ -1,5 +1,10 @@
 - username: briferz
   is_owner: true
+  teams:
+    - name: Python Devs
+      is_maintainer: true
 - username: briferzx
   is_owner: true
+  teams:
+    - name: Python Devs
 - username: BrianBFZ
