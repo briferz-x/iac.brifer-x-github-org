@@ -44,7 +44,6 @@ locals {
   repositories = {
   for path in fileset(path.module, "${local.conf_folder}/repositories/*.yaml") : basename(path) => file(path)
   }
-
   repository_mapping = {
   for file_name, file_content in local.repositories : trimsuffix(file_name, ".yaml") => yamldecode(file_content)
   }
@@ -56,4 +55,21 @@ module "repository" {
   for_each = local.repository_mapping
 
   repo_conf = each.value
+}
+
+locals {
+  members_file_path = "${path.module}/${local.conf_folder}/members.yaml"
+  members_file      = file(local.members_file_path)
+  members           = yamldecode(local.members_file)
+  member_mapping    = {
+  for member in local.members : member["username"] => member
+  }
+}
+
+module "membership" {
+  source = "./modules/membership"
+
+  for_each = local.member_mapping
+
+  member_conf = each.value
 }
