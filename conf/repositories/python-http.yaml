@@ -5,3 +5,7 @@ branches:
     default: true
   - name: dev
     source_branch: master
+teams:
+  - name: Python Devs
+    permission: push
+

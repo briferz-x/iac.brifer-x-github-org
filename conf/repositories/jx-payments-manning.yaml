@@ -5,3 +5,9 @@ branches:
     default: true
   - name: dev
     source_branch: main
+teams:
+  - name: Python Devs
+    permission: pull
+  - name: Node Devs
+    permission: pull
+

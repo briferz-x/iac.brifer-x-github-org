@@ -3,3 +3,8 @@ is_private: false
 branches:
   - name: main
     default: true
+teams:
+  - name: Python Devs
+    permission: push
+  - name: Node Devs
+    permission: pull
