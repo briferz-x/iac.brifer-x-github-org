@@ -40,12 +40,12 @@ resource "github_branch_default" "this_repo_branch_default" {
 }
 
 locals {
-  conf_folder      = "conf"
-  conf_folder_path = "${path.module}/${local.conf_folder}"
-  teams_file_path  = "${local.conf_folder_path}/teams.yaml"
-  teams_file       = file(local.teams_file_path)
-  teams            = yamldecode(local.teams_file)
-  team_mapping     = {
+  conf_folder       = "conf"
+  conf_folder_path  = "${path.module}/${local.conf_folder}"
+  teams_file_path   = "${local.conf_folder_path}/teams.yaml"
+  teams_file        = file(local.teams_file_path)
+  teams             = yamldecode(local.teams_file)
+  team_conf_mapping = {
   for team in local.teams : team["name"] => team
   }
 }
@@ -53,7 +53,7 @@ locals {
 module "team" {
   source = "./modules/team"
 
-  for_each = local.team_mapping
+  for_each = local.team_conf_mapping
 
   team_conf = each.value
 }
@@ -65,6 +65,9 @@ locals {
   member_mapping    = {
   for member in local.members : member["username"] => member
   }
+  team_resource_mapping = {
+  for team_name, team_module in module.team : team_name => team_module.team
+  }
 }
 
 module "membership" {
@@ -73,7 +76,7 @@ module "membership" {
   for_each = local.member_mapping
 
   member_conf = each.value
-  teams       = {for team_name, team_module in module.team : team_name => team_module.team}
+  teams       = local.team_resource_mapping
 }
 
 locals {
@@ -91,4 +94,5 @@ module "repository" {
   for_each = local.repository_mapping
 
   repo_conf = each.value
+  teams     = local.team_resource_mapping
 }

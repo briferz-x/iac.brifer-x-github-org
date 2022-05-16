@@ -33,3 +33,30 @@ module "branch" {
   branch_conf = each.value
   repository  = github_repository.repository
 }
+
+module "admin_team_repository" {
+  source = "../team_repository"
+
+  for_each = var.admin_teams
+
+  repository           = github_repository.repository
+  team                 = each.value
+  team_repository_conf = { "permission" = "admin" }
+}
+
+locals {
+  teams        = lookup(var.repo_conf, "teams", [])
+  team_mapping = {
+  for team in local.teams : team["name"] => team
+  }
+}
+
+module "team_repository" {
+  source = "../team_repository"
+
+  for_each = local.team_mapping
+
+  repository           = github_repository.repository
+  team                 = var.teams[each.key]
+  team_repository_conf = each.value
+}
