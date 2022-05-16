@@ -9,4 +9,5 @@
   is_owner: true
   teams:
     - name: Python Devs
+      is_maintainer: true
 - username: BrianBFZ
