@@ -93,6 +93,7 @@ module "repository" {
 
   for_each = local.repository_mapping
 
-  repo_conf = each.value
-  teams     = local.team_resource_mapping
+  repo_conf   = each.value
+  teams       = local.team_resource_mapping
+  admin_teams = { "devops" = github_team.devops_team }
 }
