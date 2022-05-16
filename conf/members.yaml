@@ -3,6 +3,8 @@
   teams:
     - name: Python Devs
       is_maintainer: true
+    - name: Node Devs
+      is_maintainer: true
 - username: briferzx
   is_owner: true
   teams:

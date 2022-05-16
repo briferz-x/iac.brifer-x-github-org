@@ -5,3 +5,7 @@
   description: The Python Dev Team.
   is_secret: false
   parent_team: Engineering
+- name: Node Devs
+  description: The NodeJS Dev Team.
+  parent_team: Engineering
+  is_secret: false
