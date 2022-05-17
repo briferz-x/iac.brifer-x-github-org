@@ -1,0 +1,9 @@
+- username: briferz
+  is_owner: true
+  teams:
+    - name: devops
+      is_maintainer: true
+- username: briferzx
+  is_owner: true
+  teams:
+    - name: devops

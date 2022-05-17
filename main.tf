@@ -2,21 +2,6 @@ provider "github" {
   owner = var.github_owner
 }
 
-module "admin_team" {
-  source    = "./modules/team"
-  team_conf = {
-    name        = "devops"
-    description = "The DevOps team."
-    is_secret   = false
-  }
-}
-
-resource "github_team_membership" "briferz_devops_membership" {
-  team_id  = module.admin_team.team.id
-  username = "briferz"
-  role     = "maintainer"
-}
-
 resource "github_repository" "this_repo" {
   name = "iac.brifer-x-github-org"
 
@@ -74,7 +59,7 @@ module "membership" {
 
   for_each = local.member_mapping
 
-  member_conf = each.value
+  member_conf = merge(each.value, { admin_member = false })
   teams       = local.team_resource_mapping
 }
 
@@ -94,5 +79,5 @@ module "repository" {
 
   repo_conf   = each.value
   teams       = local.team_resource_mapping
-  admin_teams = { "devops" = module.admin_team.team }
+  admin_teams = local.admin_team_resource_mapping
 }
