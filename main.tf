@@ -2,18 +2,17 @@ provider "github" {
   owner = var.github_owner
 }
 
-data "github_organization" "organization" {
-  name = var.github_owner
-}
-
-resource "github_team" "devops_team" {
-  name        = "devops"
-  description = "The DevOps team."
-  privacy     = "closed"
+module "admin_team" {
+  source    = "./modules/team"
+  team_conf = {
+    name        = "devops"
+    description = "The DevOps team."
+    is_secret   = false
+  }
 }
 
 resource "github_team_membership" "briferz_devops_membership" {
-  team_id  = github_team.devops_team.id
+  team_id  = module.admin_team.team.id
   username = "briferz"
   role     = "maintainer"
 }
@@ -95,5 +94,5 @@ module "repository" {
 
   repo_conf   = each.value
   teams       = local.team_resource_mapping
-  admin_teams = { "devops" = github_team.devops_team }
+  admin_teams = { "devops" = module.admin_team.team }
 }
