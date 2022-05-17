@@ -41,7 +41,7 @@ module "admin_team_repository" {
 
   repository           = github_repository.repository
   team                 = each.value
-  team_repository_conf = { "permission" = "admin" }
+  team_repository_conf = { admin_team = true, permission = "admin" }
 }
 
 locals {
@@ -58,5 +58,5 @@ module "team_repository" {
 
   repository           = github_repository.repository
   team                 = var.teams[each.key]
-  team_repository_conf = each.value
+  team_repository_conf = merge(each.value, { admin_team = false })
 }
