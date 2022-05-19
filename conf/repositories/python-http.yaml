@@ -8,4 +8,8 @@ branches:
 teams:
   - name: Python Devs
     permission: push
-
+#branch_protections:
+#  - pattern: master
+#    required_pull_request_reviews:
+#      required_approving_review_count: 2
+#  - pattern: dev

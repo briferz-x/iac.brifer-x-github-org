@@ -19,8 +19,8 @@ resource "github_repository" "repository" {
 }
 
 locals {
-  branches     = lookup(var.repo_conf, "branches", [])
-  branches_map = {
+  branches   = lookup(var.repo_conf, "branches", [])
+  branch_map = {
   for branch in local.branches : branch["name"] => branch
   }
 }
@@ -28,7 +28,7 @@ locals {
 module "branch" {
   source = "../branch"
 
-  for_each = local.branches_map
+  for_each = local.branch_map
 
   branch_conf = each.value
   repository  = github_repository.repository
@@ -59,4 +59,20 @@ module "team_repository" {
   repository           = github_repository.repository
   team                 = var.teams[each.key]
   team_repository_conf = merge(each.value, { admin_team = false })
+}
+
+locals {
+  branch_protections    = lookup(var.repo_conf, "branch_protections", [])
+  branch_protection_map = {
+  for branch_protection in local.branch_protections : branch_protection["pattern"] => branch_protection
+  }
+}
+
+module "branch_protection" {
+  source = "../branch_protection"
+
+  for_each = local.branch_protection_map
+
+  branch_protection_conf = each.value
+  repository             = github_repository.repository
 }
