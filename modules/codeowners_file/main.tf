@@ -20,4 +20,6 @@ module "repository_file" {
 
   content   = "${join("\n", local.codeowners_file_lines)}\n"
   file_path = "CODEOWNERS"
+
+  commit_message = "Add CODEOWNERS file managed by Terraform."
 }

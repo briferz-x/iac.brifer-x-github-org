@@ -13,3 +13,8 @@ variable "admin_teams" {
   description = "The administrator teams of the organization"
   default     = {}
 }
+
+variable "organization_name" {
+  type        = string
+  description = "The organization name"
+}

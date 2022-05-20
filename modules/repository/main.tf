@@ -61,6 +61,22 @@ module "team_repository" {
   team_repository_conf = merge(each.value, { admin_team = false })
 }
 
+module "codeowners_file" {
+  source = "../codeowners_file"
+
+  for_each = module.branch
+
+  branch      = each.value.branch
+  code_owners = [
+    {
+      path  = "CODEOWNERS"
+      teams = [for admin_team_key, _ in var.admin_teams : admin_team_key]
+    }
+  ]
+  organization_name = var.organization_name
+  repository        = github_repository.repository
+}
+
 locals {
   branch_protections    = lookup(var.repo_conf, "branch_protections", [])
   branch_protection_map = {
