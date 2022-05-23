@@ -61,6 +61,10 @@ module "team_repository" {
   team_repository_conf = merge(each.value, { admin_team = false })
 }
 
+locals {
+  code_owners_admin_teams_list = [for admin_team_key, _ in var.admin_teams : admin_team_key]
+}
+
 module "codeowners_file" {
   source = "../codeowners_file"
 
@@ -68,10 +72,9 @@ module "codeowners_file" {
 
   branch      = each.value.branch
   code_owners = [
-    {
-      path  = "CODEOWNERS"
-      teams = [for admin_team_key, _ in var.admin_teams : admin_team_key]
-    }
+  for admin_codeowners_path in var.admin_codeowners_paths : {
+    path = admin_codeowners_path, teams = local.code_owners_admin_teams_list
+  }
   ]
   organization_name = var.organization_name
   repository        = github_repository.repository

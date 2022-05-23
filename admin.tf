@@ -34,3 +34,9 @@ module "admin_membership" {
   member_conf = merge(each.value, { admin_member = true })
   teams       = local.admin_team_resource_mapping
 }
+
+locals {
+  admin_codeowners_paths_file_path = "${local.admin_conf_folder_path}/admin_codeowners_paths.yaml"
+  admin_codeowners_paths_file      = file(local.admin_codeowners_paths_file_path)
+  admin_codeowners_paths           = yamldecode(local.admin_codeowners_paths_file)
+}
