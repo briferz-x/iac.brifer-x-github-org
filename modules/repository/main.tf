@@ -71,7 +71,7 @@ locals {
 
   # only teams with push, maintain and admin permission on the repository can be part of the CODEOWNERS file
   # source: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#codeowners-syntax
-  code_owners_team_permission_filter_list    = [push, maintain, admin]
+  code_owners_team_permission_filter_list    = ["push", "maintain", "admin"]
   code_owners_team_permission_filter_mapping = {for code_owners_team_permission_filter in local.code_owners_team_permission_filter_list : code_owners_team_permission_filter => true}
   code_owners_team_list                      = [
   for _, team_repository_module in module.team_repository : team_repository_module.team.name
