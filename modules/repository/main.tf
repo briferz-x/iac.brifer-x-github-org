@@ -62,7 +62,7 @@ module "team_repository" {
 }
 
 locals {
-  code_owners_admin_teams_list = [for admin_team_key, _ in var.admin_teams : admin_team_key]
+  code_owners_admin_teams_list = [for _, admin_team in var.admin_teams : admin_team.slug]
   admin_code_owners            = [
   for admin_codeowners_path in var.admin_codeowners_paths : {
     path = admin_codeowners_path, teams = local.code_owners_admin_teams_list
