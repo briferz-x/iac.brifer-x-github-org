@@ -63,6 +63,28 @@ module "team_repository" {
 
 locals {
   code_owners_admin_teams_list = [for admin_team_key, _ in var.admin_teams : admin_team_key]
+  admin_code_owners            = [
+  for admin_codeowners_path in var.admin_codeowners_paths : {
+    path = admin_codeowners_path, teams = local.code_owners_admin_teams_list
+  }
+  ]
+
+  # only teams with push, maintain and admin permission on the repository can be part of the CODEOWNERS file
+  # source: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#codeowners-syntax
+  code_owners_team_permission_filter_list    = [push, maintain, admin]
+  code_owners_team_permission_filter_mapping = {for code_owners_team_permission_filter in local.code_owners_team_permission_filter_list : code_owners_team_permission_filter => true}
+  code_owners_team_list                      = [
+  for _, team_repository_module in module.team_repository : team_repository_module.team.name
+  if lookup(local.code_owners_team_permission_filter_mapping, team_repository_module.team_repository.permission, false)
+  ]
+  code_owners_paths = [
+    "*"
+  ]
+  code_owners = [
+  for codeowners_path in local.code_owners_paths : {
+    path = codeowners_path, teams = local.code_owners_team_list
+  }
+  ]
 }
 
 module "codeowners_file" {
@@ -70,12 +92,9 @@ module "codeowners_file" {
 
   for_each = module.branch
 
-  branch      = each.value.branch
-  code_owners = [
-  for admin_codeowners_path in var.admin_codeowners_paths : {
-    path = admin_codeowners_path, teams = local.code_owners_admin_teams_list
-  }
-  ]
+  branch            = each.value.branch
+  # Admin code owners go last because the latest lines take precedence.
+  code_owners       = concat(local.code_owners, local.admin_code_owners)
   organization_name = var.organization_name
   repository        = github_repository.repository
 }
