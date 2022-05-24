@@ -74,7 +74,7 @@ locals {
   code_owners_team_permission_filter_list    = ["push", "maintain", "admin"]
   code_owners_team_permission_filter_mapping = {for code_owners_team_permission_filter in local.code_owners_team_permission_filter_list : code_owners_team_permission_filter => true}
   code_owners_team_list                      = [
-  for _, team_repository_module in module.team_repository : team_repository_module.team.name
+  for _, team_repository_module in module.team_repository : team_repository_module.team.slug
   if lookup(local.code_owners_team_permission_filter_mapping, team_repository_module.team_repository.permission, false)
   ]
   code_owners_paths = [
