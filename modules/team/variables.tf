@@ -1,3 +1,4 @@
 variable "team_conf" {
-  type = any
+  type        = any
+  description = "The configuration regarding a team resource."
 }

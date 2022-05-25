@@ -3,7 +3,8 @@ variable "repository" {
 }
 
 variable "branch" {
-  type = any
+  type        = any
+  description = "The branch resource related to the CODEOWNERS file."
 }
 
 variable "organization_name" {

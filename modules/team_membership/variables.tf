@@ -5,10 +5,10 @@ variable "team_member_conf" {
 
 variable "team" {
   type        = any
-  description = "The related team"
+  description = "The related team resource."
 }
 
 variable "membership" {
   type        = any
-  description = "The related membership"
+  description = "The related membership resource."
 }

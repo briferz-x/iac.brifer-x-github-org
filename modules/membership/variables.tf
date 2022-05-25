@@ -9,6 +9,6 @@ variable "member_conf" {
 
 variable "teams" {
   type        = map(any)
-  description = "The teams of the organization"
+  description = "The teams of the organization."
   default     = {}
 }

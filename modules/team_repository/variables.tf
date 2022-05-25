@@ -10,10 +10,10 @@ variable "team_repository_conf" {
 
 variable "team" {
   type        = any
-  description = "The related team."
+  description = "The related team resource."
 }
 
 variable "repository" {
   type        = any
-  description = "The related repository."
+  description = "The related repository resource."
 }

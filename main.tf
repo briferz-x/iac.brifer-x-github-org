@@ -78,7 +78,7 @@ module "repository" {
   for_each = local.repository_mapping
 
   repo_conf              = each.value
-  teams                  = local.team_resource_mapping
+  teams                  = merge(local.team_resource_mapping, local.admin_team_resource_mapping)
   admin_teams            = local.admin_team_resource_mapping
   admin_codeowners_paths = local.admin_codeowners_paths
   organization_name      = var.github_owner
