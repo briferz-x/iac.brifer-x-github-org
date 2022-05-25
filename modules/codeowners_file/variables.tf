@@ -14,8 +14,12 @@ variable "code_owners" {
   type = list(object({
     path  = string
     teams = list(object({
-      team            = any
-      team_repository = any
+      team = object({
+        slug = string
+      })
+      team_repository = object({
+        permission = string
+      })
     }))
   }))
   description = "List of objects containing a path and a list of objects containing a team and a team repository resources."
