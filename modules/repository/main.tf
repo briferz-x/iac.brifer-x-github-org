@@ -62,20 +62,23 @@ module "team_repository" {
 }
 
 locals {
-  code_owners_admin_teams_list = [for _, admin_team in var.admin_teams : admin_team.slug]
-  admin_code_owners            = [
+  code_owners_admin_teams_list = [
+  for _, admin_team_repository_module in module.admin_team_repository : {
+    team            = admin_team_repository_module.team,
+    team_repository = admin_team_repository_module.team_repository
+  }
+  ]
+  admin_code_owners = [
   for admin_codeowners_path in var.admin_codeowners_paths : {
     path = admin_codeowners_path, teams = local.code_owners_admin_teams_list
   }
   ]
 
-  # only teams with push, maintain and admin permission on the repository can be part of the CODEOWNERS file
-  # source: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners#codeowners-syntax
-  code_owners_team_permission_filter_list    = ["push", "maintain", "admin"]
-  code_owners_team_permission_filter_mapping = {for code_owners_team_permission_filter in local.code_owners_team_permission_filter_list : code_owners_team_permission_filter => true}
-  code_owners_team_list                      = [
-  for _, team_repository_module in module.team_repository : team_repository_module.team.slug
-  if lookup(local.code_owners_team_permission_filter_mapping, team_repository_module.team_repository.permission, false)
+  code_owners_team_list = [
+  for _, team_repository_module in module.team_repository : {
+    team            = team_repository_module.team,
+    team_repository = team_repository_module.team_repository
+  }
   ]
   code_owners_paths = [
     "*"
