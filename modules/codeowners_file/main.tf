@@ -15,7 +15,7 @@ module "codeowners_file_line" {
   organization_name = var.organization_name
   path              = var.code_owners[count.index].path
   teams             = [
-  for team_obj in var.code_owners[count.index] : team_obj.team.slug
+  for team_obj in var.code_owners[count.index].teams : team_obj.team.slug
   if lookup(local.code_owners_team_permission_filter_mapping, team_obj.team_repository.permission, false)
   ]
 }
