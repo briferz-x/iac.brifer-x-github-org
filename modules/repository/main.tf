@@ -74,18 +74,30 @@ locals {
   }
   ]
 
-  code_owners_team_list = [
+  code_owners_default_team_list = [
   for _, team_repository_module in module.team_repository : {
     team            = team_repository_module.team,
     team_repository = team_repository_module.team_repository
   }
   ]
-  code_owners_paths = [
+  code_owners_default_paths = [
     "*"
   ]
-  code_owners = [
-  for codeowners_path in local.code_owners_paths : {
-    path = codeowners_path, teams = local.code_owners_team_list
+  conf_code_owners = lookup(var.repo_conf, "code_owners", [])
+
+  code_owners = length(local.conf_code_owners) == 0 ? [
+  for codeowners_path in local.code_owners_default_paths : {
+    path = codeowners_path, teams = local.code_owners_default_team_list
+  }
+  ] : [
+  for conf_code_owner in local.conf_code_owners : {
+    path  = conf_code_owner["path"],
+    teams = [
+    for team in conf_code_owner["teams"] : {
+      team            = module.team_repository[team].team,
+      team_repository = module.team_repository[team].team_repository
+    }
+    ]
   }
   ]
 }

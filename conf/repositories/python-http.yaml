@@ -14,3 +14,7 @@ teams:
 #    required_pull_request_reviews:
 #      required_approving_review_count: 2
 #  - pattern: dev
+code_owners:
+  - path: '*'
+    teams:
+      - Python Devs
