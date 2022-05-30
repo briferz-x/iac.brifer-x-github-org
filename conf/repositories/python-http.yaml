@@ -5,6 +5,7 @@ branches:
     default: true
   - name: dev
     source_branch: master
+    include_code_owners_file: false
 teams:
   - name: Python Devs
     permission: push

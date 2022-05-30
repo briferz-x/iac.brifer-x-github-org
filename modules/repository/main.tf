@@ -93,7 +93,7 @@ locals {
 module "codeowners_file" {
   source = "../codeowners_file"
 
-  for_each = module.branch
+  for_each = {for branch_key, branch_module in module.branch : branch_key => branch_module if branch_module.include_code_owners_file}
 
   branch            = each.value.branch
   # Admin code owners go last because the latest lines take precedence.

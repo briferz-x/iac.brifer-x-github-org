@@ -5,7 +5,8 @@ resource "github_branch" "branch" {
 }
 
 locals {
-  is_default = lookup(var.branch_conf, "default", false)
+  is_default               = lookup(var.branch_conf, "default", false)
+  include_code_owners_file = lookup(var.branch_conf, "include_code_owners_file", true)
 }
 
 resource "github_branch_default" "default_branch" {
