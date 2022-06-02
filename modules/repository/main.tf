@@ -5,6 +5,7 @@ locals {
 resource "github_repository" "repository" {
   name = var.repo_conf["name"]
 
+  auto_init              = true
   visibility             = local.visibility
   delete_branch_on_merge = lookup(var.repo_conf, "delete_branch_on_merge", true)
   allow_squash_merge     = lookup(var.repo_conf, "allow_squash_merge", true)
