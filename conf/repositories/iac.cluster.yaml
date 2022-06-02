@@ -9,4 +9,4 @@ teams:
 code_owners:
   - path: '*'
     teams:
-      - DevOps
+      - devops
