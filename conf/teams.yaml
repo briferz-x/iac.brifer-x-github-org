@@ -9,3 +9,7 @@
   description: The NodeJS Dev Team.
   parent_team: Engineering
   is_secret: false
+- name: demo-team
+  description: A new demo team
+  parent_team: Engineering
+  is_secret: false
