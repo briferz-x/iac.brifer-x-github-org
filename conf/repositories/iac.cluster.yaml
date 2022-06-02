@@ -1,0 +1,12 @@
+name: iac.cluster
+is_private: true
+branches:
+  - name: main
+    default: true
+teams:
+  - name: Python Devs
+    permission: push
+code_owners:
+  - path: '*'
+    teams:
+      - DevOps
